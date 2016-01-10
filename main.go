@@ -20,8 +20,8 @@ func getVerbs() (error) {
 	return err
 }
 func main() {
-//	fmt.Println(player.EMOTION_JOY | player.EMOTION_RELIEF | player.EMOTION_ANGER)
-//	fmt.Println((((player.EMOTION_JOY | player.EMOTION_RELIEF | player.EMOTION_ANGER) & player.EMOTION_RELIEF) == player.EMOTION_RELIEF))
+	//	fmt.Println(player.EMOTION_JOY | player.EMOTION_RELIEF | player.EMOTION_ANGER)
+	//	fmt.Println((((player.EMOTION_JOY | player.EMOTION_RELIEF | player.EMOTION_ANGER) & player.EMOTION_RELIEF) == player.EMOTION_RELIEF))
 	if getVerbs() == nil {
 		fmt.Println(verbs)
 	}

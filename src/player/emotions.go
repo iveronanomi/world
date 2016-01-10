@@ -37,9 +37,9 @@ type Recipient interface {
 }
 
 type Applet struct {
-	Agent Person
-	Action Verb
-	Recipient Recipient
+	Agent       Person
+	Action      Verb
+	Recipient   Recipient
 	Possibility float32
 }
 
@@ -68,30 +68,30 @@ func (n *Noun) getAttitude(p2 Person) float32 {
 }
 
 func (a Applet) process() (Bitmask, error) {
-	var e Bitmask
+	var emotions Bitmask
 	var err error
 
 	if a.Action.SocialStigma > 1 {
 		if a.Agent == a.Recipient.get() {
-			e = EMOTION_PRIDE
+			emotions = EMOTION_PRIDE
 		} else {
-			e = EMOTION_ADMIRATION
+			emotions = EMOTION_ADMIRATION
 		}
 	} else if a.Action.SocialStigma < 1 {
 		if a.Agent == a.Recipient.get() {
-			e = EMOTION_SHAME
+			emotions = EMOTION_SHAME
 		} else {
-			e = EMOTION_ANGER
+			emotions = EMOTION_ANGER
 		}
 	}
 
-	if 	(a.Action.Attitude > 0 && a.Recipient.getAttitude(a.Agent) > 0 ||
-		a.Action.Attitude < 0 && a.Recipient.getAttitude(a.Agent) < 0) {
-		e |= EMOTION_JOY
+	if (a.Action.Attitude > 0 && a.Recipient.getAttitude(a.Agent) > 0 ||
+	a.Action.Attitude < 0 && a.Recipient.getAttitude(a.Agent) < 0) {
+		emotions |= EMOTION_JOY
 	}
-	if 	(a.Action.Attitude < 0 && a.Recipient.getAttitude(a.Agent) > 0 ||
+	if (a.Action.Attitude < 0 && a.Recipient.getAttitude(a.Agent) > 0 ||
 	a.Action.Attitude > 0 && a.Recipient.getAttitude(a.Agent) < 0) {
-		e |= EMOTION_ANGER
+		emotions |= EMOTION_ANGER
 	}
-	return e, err
+	return emotions, err
 }
