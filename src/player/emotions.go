@@ -1,6 +1,7 @@
 package player
 
 type Bitmask uint16
+type Emotion Bitmask
 
 const (
 	EMOTION_JOY Bitmask = 1
@@ -15,7 +16,82 @@ const (
 	EMOTION_ANGER Bitmask = 1024
 )
 
-type Emotion struct {
-	Name  string
-	Value Bitmask
+type Verb struct {
+	Name         string
+	Attitude     float32
+	SocialStigma float32
+}
+
+type Noun struct {
+	Name     string
+	Attitude float32
+}
+
+type Processable interface {
+	process() Bitmask
+}
+
+type Recipient interface {
+	get()
+	getAttitude() float32
+}
+
+type Applet struct {
+	Agent Person
+	Action Verb
+	Recipient Recipient
+	Possibility float32
+}
+
+func (p Person) get() Person {
+	return p
+}
+
+func (p Person) getAttitude(p2 Person) float32 {
+	return 0
+}
+
+func (v Verb) get() Verb {
+	return v
+}
+
+func (v Verb) getAttitude(p2 Person) float32 {
+	return v.Attitude
+}
+
+func (n *Noun) get() Noun {
+	return n
+}
+
+func (n *Noun) getAttitude(p2 Person) float32 {
+	return 0
+}
+
+func (a Applet) process() (Bitmask, error) {
+	var e Bitmask
+	var err error
+
+	if a.Action.SocialStigma > 1 {
+		if a.Agent == a.Recipient.get() {
+			e = EMOTION_PRIDE
+		} else {
+			e = EMOTION_ADMIRATION
+		}
+	} else if a.Action.SocialStigma < 1 {
+		if a.Agent == a.Recipient.get() {
+			e = EMOTION_SHAME
+		} else {
+			e = EMOTION_ANGER
+		}
+	}
+
+	if 	(a.Action.Attitude > 0 && a.Recipient.getAttitude(a.Agent) > 0 ||
+		a.Action.Attitude < 0 && a.Recipient.getAttitude(a.Agent) < 0) {
+		e |= EMOTION_JOY
+	}
+	if 	(a.Action.Attitude < 0 && a.Recipient.getAttitude(a.Agent) > 0 ||
+	a.Action.Attitude > 0 && a.Recipient.getAttitude(a.Agent) < 0) {
+		e |= EMOTION_ANGER
+	}
+	return e, err
 }

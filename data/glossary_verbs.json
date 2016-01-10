@@ -1,0 +1,5 @@
+[
+  {"Name": "Kill", "attitude": 0.2, "socialStigma": 0.3},
+  {"Name": "Getting skill", "attitude": 0.5, "socialStigma": 0.3},
+  {"Name": "Eating", "attitude": 0.8, "socialStigma": 0.2}
+]
