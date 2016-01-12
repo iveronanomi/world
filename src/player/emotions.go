@@ -32,39 +32,40 @@ type Processable interface {
 }
 
 type Recipient interface {
-	get()
-	getAttitude() float32
+	getAttitude(a Agent) float32
+	equal(a Agent) bool
 }
+type Agent interface{}
 
 type Applet struct {
-	Agent       Person
+	Agent       Agent
 	Action      Verb
 	Recipient   Recipient
 	Possibility float32
-}
-
-func (p Person) get() Person {
-	return p
 }
 
 func (p Person) getAttitude(p2 Person) float32 {
 	return 0
 }
 
-func (v Verb) get() Verb {
-	return v
+func (p Person) equal(a Agent) bool {
+	return true
 }
 
 func (v Verb) getAttitude(p2 Person) float32 {
 	return v.Attitude
 }
 
-func (n *Noun) get() Noun {
-	return n
+func (p Verb) equal(a Agent) bool {
+	return true
 }
 
-func (n *Noun) getAttitude(p2 Person) float32 {
+func (n Noun) getAttitude(p2 Person) float32 {
 	return 0
+}
+
+func (p Noun) equal(a Agent) bool {
+	return true
 }
 
 func (a Applet) process() (Bitmask, error) {
@@ -72,13 +73,13 @@ func (a Applet) process() (Bitmask, error) {
 	var err error
 
 	if a.Action.SocialStigma > 1 {
-		if a.Agent == a.Recipient.get() {
+		if a.Recipient.equal(a.Agent) {
 			emotions = EMOTION_PRIDE
 		} else {
 			emotions = EMOTION_ADMIRATION
 		}
 	} else if a.Action.SocialStigma < 1 {
-		if a.Agent == a.Recipient.get() {
+		if a.Recipient.equal(a.Agent) {
 			emotions = EMOTION_SHAME
 		} else {
 			emotions = EMOTION_ANGER
