@@ -16,10 +16,43 @@ const (
 	EMOTION_ANGER Bitmask = 1024
 )
 
+type recipient interface{}
+
+type agent interface {
+	getAttitude(r recipient) float32
+	equal(r recipient) bool
+}
+
+type Applet struct {
+	Agent       agent
+	Action      Verb
+	Recipient   recipient
+	Possibility float32
+}
+
+func (p Person) getAttitude(r recipient) float32 {
+	if p == r {
+		return 1
+	}
+	return 0
+}
+
+func (p Person) equal(r recipient) bool {
+	return true
+}
+
 type Verb struct {
 	Name         string
 	Attitude     float32
 	SocialStigma float32
+}
+
+func (v Verb) getAttitude(r recipient) float32 {
+	return v.Attitude
+}
+
+func (p Verb) equal(r recipient) bool {
+	return true
 }
 
 type Noun struct {
@@ -27,53 +60,20 @@ type Noun struct {
 	Attitude float32
 }
 
-type Processable interface {
-	process() Bitmask
-}
-
-type Recipient interface {
-	getAttitude(a Agent) float32
-	equal(a Agent) bool
-}
-type Agent interface {
-	getAttitude(r Recipient) float32
-	equal(r Recipient) bool
-}
-
-type Applet struct {
-	Agent       Agent
-	Action      Verb
-	Recipient   Recipient
-	Possibility float32
-}
-
-func (p Person) getAttitude(a Agent) float32 {
+func (n Noun) getAttitude(r recipient) float32 {
 	return 0
 }
 
-func (p Person) equal(a Agent) bool {
+func (p Noun) equal(r recipient) bool {
 	return true
 }
 
-func (v Verb) getAttitude(a Agent) float32 {
-	return v.Attitude
+type processable interface {
+	Process() Bitmask
 }
 
-func (p Verb) equal(a Agent) bool {
-	return true
-}
-
-func (n Noun) getAttitude(a Agent) float32 {
-	return 0
-}
-
-func (p Noun) equal(a Agent) bool {
-	return true
-}
-
-func (a Applet) process() (Bitmask, error) {
+func (a Applet) Process() Bitmask {
 	var emotions Bitmask
-	var err error
 
 	if a.Action.SocialStigma > 1 {
 		if a.Agent.equal(a.Recipient) {
@@ -98,5 +98,6 @@ func (a Applet) process() (Bitmask, error) {
 	a.Action.Attitude > 0 && a.Agent.getAttitude(a.Recipient) < 0) {
 		emotions |= EMOTION_ANGER
 	}
-	return emotions, err
+
+	return emotions
 }

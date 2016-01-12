@@ -27,4 +27,11 @@ func main() {
 		fmt.Println(verbs)
 	}
 
+	testApplet := player.Applet{
+		Agent:    player.Person{Name:"Dave"},
+		Action: player.Verb{Name:"Kill", SocialStigma:-1, Attitude:-0.9},
+		Recipient: player.Person{Name:"Dave"},
+		Possibility: float32(0.9)}
+
+	fmt.Println(testApplet.Process())
 }
