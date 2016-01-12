@@ -95,12 +95,12 @@ func (a Applet) Process() Bitmask {
 
 	if (a.Action.Attitude > 0 && a.Agent.getAttitude(a.Recipient) > 0 ||
 	a.Action.Attitude < 0 && a.Agent.getAttitude(a.Recipient) < 0) {
-		emotions |= EMOTION_JOY
+		emotions |= EMOTION_JOY//|EMOTION_HOPE|EMOTION_DISAPPOINTMENT
 	}
 
 	if (a.Action.Attitude < 0 && a.Agent.getAttitude(a.Recipient) > 0 ||
 	a.Action.Attitude > 0 && a.Agent.getAttitude(a.Recipient) < 0) {
-		emotions |= EMOTION_ANGER
+		emotions |= EMOTION_DISTRESS//|EMOTION_FEAR|EMOTION_RELIEF
 	}
 
 	return emotions
