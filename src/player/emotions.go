@@ -30,15 +30,19 @@ type Applet struct {
 	Possibility float32
 }
 
+func equal(i1 interface{}, i2 interface{}) bool {
+	return i1 == i2
+}
+
 func (p Person) getAttitude(r recipient) float32 {
-	if p == r {
+	if equal(p, r) {
 		return 1
 	}
 	return 0
 }
 
 func (p Person) equal(r recipient) bool {
-	return true
+	return equal(p, r)
 }
 
 type Verb struct {
@@ -51,8 +55,8 @@ func (v Verb) getAttitude(r recipient) float32 {
 	return v.Attitude
 }
 
-func (p Verb) equal(r recipient) bool {
-	return true
+func (v Verb) equal(r recipient) bool {
+	return equal(v, r)
 }
 
 type Noun struct {
@@ -64,8 +68,8 @@ func (n Noun) getAttitude(r recipient) float32 {
 	return 0
 }
 
-func (p Noun) equal(r recipient) bool {
-	return true
+func (n Noun) equal(r recipient) bool {
+	return equal(n, r)
 }
 
 type processable interface {
