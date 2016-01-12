@@ -35,7 +35,10 @@ type Recipient interface {
 	getAttitude(a Agent) float32
 	equal(a Agent) bool
 }
-type Agent interface{}
+type Agent interface {
+	getAttitude(r Recipient) float32
+	equal(r Recipient) bool
+}
 
 type Applet struct {
 	Agent       Agent
@@ -44,7 +47,7 @@ type Applet struct {
 	Possibility float32
 }
 
-func (p Person) getAttitude(p2 Person) float32 {
+func (p Person) getAttitude(a Agent) float32 {
 	return 0
 }
 
@@ -52,7 +55,7 @@ func (p Person) equal(a Agent) bool {
 	return true
 }
 
-func (v Verb) getAttitude(p2 Person) float32 {
+func (v Verb) getAttitude(a Agent) float32 {
 	return v.Attitude
 }
 
@@ -60,7 +63,7 @@ func (p Verb) equal(a Agent) bool {
 	return true
 }
 
-func (n Noun) getAttitude(p2 Person) float32 {
+func (n Noun) getAttitude(a Agent) float32 {
 	return 0
 }
 
@@ -73,25 +76,26 @@ func (a Applet) process() (Bitmask, error) {
 	var err error
 
 	if a.Action.SocialStigma > 1 {
-		if a.Recipient.equal(a.Agent) {
+		if a.Agent.equal(a.Recipient) {
 			emotions = EMOTION_PRIDE
 		} else {
 			emotions = EMOTION_ADMIRATION
 		}
 	} else if a.Action.SocialStigma < 1 {
-		if a.Recipient.equal(a.Agent) {
+		if a.Agent.equal(a.Recipient) {
 			emotions = EMOTION_SHAME
 		} else {
 			emotions = EMOTION_ANGER
 		}
 	}
 
-	if (a.Action.Attitude > 0 && a.Recipient.getAttitude(a.Agent) > 0 ||
-	a.Action.Attitude < 0 && a.Recipient.getAttitude(a.Agent) < 0) {
+	if (a.Action.Attitude > 0 && a.Agent.getAttitude(a.Recipient) > 0 ||
+	a.Action.Attitude < 0 && a.Agent.getAttitude(a.Recipient) < 0) {
 		emotions |= EMOTION_JOY
 	}
-	if (a.Action.Attitude < 0 && a.Recipient.getAttitude(a.Agent) > 0 ||
-	a.Action.Attitude > 0 && a.Recipient.getAttitude(a.Agent) < 0) {
+
+	if (a.Action.Attitude < 0 && a.Agent.getAttitude(a.Recipient) > 0 ||
+	a.Action.Attitude > 0 && a.Agent.getAttitude(a.Recipient) < 0) {
 		emotions |= EMOTION_ANGER
 	}
 	return emotions, err
