@@ -3,7 +3,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"encoding/json"
-	"player"
+	"world/src/player"
 )
 
 var verbs []player.Verb
@@ -21,8 +21,6 @@ func getVerbs() (error) {
 }
 
 func main() {
-	//	fmt.Println(player.EMOTION_JOY | player.EMOTION_RELIEF | player.EMOTION_ANGER)
-	//	fmt.Println((((player.EMOTION_JOY | player.EMOTION_RELIEF | player.EMOTION_ANGER) & player.EMOTION_RELIEF) == player.EMOTION_RELIEF))
 	if getVerbs() == nil {
 		fmt.Println(verbs)
 	}

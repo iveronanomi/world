@@ -1,47 +1,44 @@
 package player
+import "reflect"
 
 type Bitmask uint16
 type Emotion Bitmask
 
 const (
-	EMOTION_JOY Bitmask = 1
-	EMOTION_HOPE Bitmask = 2
-	EMOTION_DISAPPOINTMENT Bitmask = 4
-	EMOTION_DISTRESS Bitmask = 8
-	EMOTION_FEAR Bitmask = 16
-	EMOTION_RELIEF Bitmask = 32
-	EMOTION_PRIDE Bitmask = 64
-	EMOTION_ADMIRATION Bitmask = 128
-	EMOTION_SHAME Bitmask = 512
-	EMOTION_ANGER Bitmask = 1024
+	EMOTION_JOY Emotion = 1 << iota
+	EMOTION_HOPE
+	EMOTION_DISAPPOINTMENT
+	EMOTION_DISTRESS
+	EMOTION_FEAR
+	EMOTION_RELIEF
+	EMOTION_PRIDE
+	EMOTION_ADMIRATION
+	EMOTION_SHAME
+	EMOTION_ANGER
 )
 
-type recipient interface{}
+type Recipient interface{}
 
-type agent interface {
-	getAttitude(r recipient) float32
-	equal(r recipient) bool
+type Agent interface {
+	getAttitude(r Recipient) float32
+	equal(r Recipient) bool
 }
 
 type Applet struct {
-	Agent       agent
+	Agent       Agent
 	Action      Verb
-	Recipient   recipient
+	Recipient   Recipient
 	Possibility float32
 }
 
-func equal(i1 interface{}, i2 interface{}) bool {
-	return i1 == i2
-}
-
-func (p Person) getAttitude(r recipient) float32 {
+func (p Person) getAttitude(r Recipient) float32 {
 	if equal(p, r) {
 		return 1
 	}
 	return 0
 }
 
-func (p Person) equal(r recipient) bool {
+func (p Person) equal(r Recipient) bool {
 	return equal(p, r)
 }
 
@@ -51,11 +48,11 @@ type Verb struct {
 	SocialStigma float32
 }
 
-func (v Verb) getAttitude(r recipient) float32 {
+func (v Verb) getAttitude(r Recipient) float32 {
 	return v.Attitude
 }
 
-func (v Verb) equal(r recipient) bool {
+func (v Verb) equal(r Recipient) bool {
 	return equal(v, r)
 }
 
@@ -64,11 +61,11 @@ type Noun struct {
 	Attitude float32
 }
 
-func (n Noun) getAttitude(r recipient) float32 {
-	return 0
+func (n Noun) getAttitude(r Recipient) float32 {
+	return float32(0)
 }
 
-func (n Noun) equal(r recipient) bool {
+func (n Noun) equal(r Recipient) bool {
 	return equal(n, r)
 }
 
@@ -76,32 +73,36 @@ type processable interface {
 	Process() Bitmask
 }
 
-func (a Applet) Process() Bitmask {
-	var emotions Bitmask
+func equal(a interface{}, b interface{}) bool {
+	return reflect.DeepEqual(a, b)
+}
+
+func (a Applet) Process() Emotion {
+	var emo Emotion
 
 	if a.Action.SocialStigma > 1 {
 		if a.Agent.equal(a.Recipient) {
-			emotions = EMOTION_PRIDE
+			emo = EMOTION_PRIDE
 		} else {
-			emotions = EMOTION_ADMIRATION
+			emo = EMOTION_ADMIRATION
 		}
 	} else if a.Action.SocialStigma < 1 {
 		if a.Agent.equal(a.Recipient) {
-			emotions = EMOTION_SHAME
+			emo = EMOTION_SHAME
 		} else {
-			emotions = EMOTION_ANGER
+			emo = EMOTION_ANGER
 		}
 	}
 
 	if (a.Action.Attitude > 0 && a.Agent.getAttitude(a.Recipient) > 0 ||
 	a.Action.Attitude < 0 && a.Agent.getAttitude(a.Recipient) < 0) {
-		emotions |= EMOTION_JOY//|EMOTION_HOPE|EMOTION_DISAPPOINTMENT
+		emo |= EMOTION_JOY//|EMOTION_HOPE|EMOTION_DISAPPOINTMENT
 	}
 
 	if (a.Action.Attitude < 0 && a.Agent.getAttitude(a.Recipient) > 0 ||
 	a.Action.Attitude > 0 && a.Agent.getAttitude(a.Recipient) < 0) {
-		emotions |= EMOTION_DISTRESS//|EMOTION_FEAR|EMOTION_RELIEF
+		emo |= EMOTION_DISTRESS//|EMOTION_FEAR|EMOTION_RELIEF
 	}
 
-	return emotions
+	return emo
 }

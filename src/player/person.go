@@ -4,6 +4,7 @@ type Person struct {
 	Name                    string
 	Age                     int8
 	PsychoemotionalFeatures PsychoemotionalFeatures
+	Emotions                map[Bitmask]float32
 }
 
 type PsychoemotionalFeatures struct {
