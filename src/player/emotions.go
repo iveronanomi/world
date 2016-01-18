@@ -1,5 +1,4 @@
 package player
-import "reflect"
 
 type Bitmask uint16
 type Emotion Bitmask
@@ -17,29 +16,11 @@ const (
 	EMOTION_ANGER
 )
 
-type Recipient interface{}
+type IRecipient interface{}
 
-type Agent interface {
-	getAttitude(r Recipient) float32
-	equal(r Recipient) bool
-}
-
-type Applet struct {
-	Agent       Agent
-	Action      Verb
-	Recipient   Recipient
-	Possibility float32
-}
-
-func (p Person) getAttitude(r Recipient) float32 {
-	if equal(p, r) {
-		return 1
-	}
-	return 0
-}
-
-func (p Person) equal(r Recipient) bool {
-	return equal(p, r)
+type IAgent interface {
+	getAttitude(r IRecipient) float32
+	equal(r IRecipient) bool
 }
 
 type Verb struct {
@@ -48,33 +29,48 @@ type Verb struct {
 	SocialStigma float32
 }
 
-func (v Verb) getAttitude(r Recipient) float32 {
-	return v.Attitude
-}
-
-func (v Verb) equal(r Recipient) bool {
-	return equal(v, r)
-}
-
 type Noun struct {
 	Name     string
 	Attitude float32
 }
 
-func (n Noun) getAttitude(r Recipient) float32 {
-	return float32(0)
-}
-
-func (n Noun) equal(r Recipient) bool {
-	return equal(n, r)
-}
-
-type processable interface {
+type IProcessable interface {
 	Process() Bitmask
 }
 
-func equal(a interface{}, b interface{}) bool {
-	return reflect.DeepEqual(a, b)
+type Applet struct {
+	Agent       IAgent
+	Recipient   IRecipient
+	Action      Verb
+	Possibility float32
+}
+
+func (p Person) getAttitude(r IRecipient) float32 {
+	return 0
+}
+
+func (p Person) equal(r IRecipient) bool {
+	cp, ok := r.(Person)
+	if ok {
+		return cp.Name == p.Name
+	}
+	return false
+}
+
+func (v Verb) getAttitude(r IRecipient) float32 {
+	return v.Attitude
+}
+
+func (n Noun) getAttitude(r IRecipient) float32 {
+	return float32(0)
+}
+
+func (n Noun) equal(r IRecipient) bool {
+	cp, ok := r.(Noun)
+	if ok {
+		return cp.Name == n.Name
+	}
+	return false
 }
 
 func (a Applet) Process() Emotion {

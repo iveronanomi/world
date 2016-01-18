@@ -25,11 +25,15 @@ func main() {
 		fmt.Println(verbs)
 	}
 
-	testApplet := player.Applet{
+	player.Applet{
 		Agent:    player.Person{Name:"Dave"},
-		Action: player.Verb{Name:"Kill", SocialStigma:-1, Attitude:-0.9},
 		Recipient: player.Person{Name:"Dave"},
-		Possibility: float32(0.9)}
+		Action: player.Verb{Name:"Kill", SocialStigma:-1, Attitude:-0.9},
+		Possibility: float32(0.9)}.Process()
 
-	fmt.Println(testApplet.Process())
+	player.Applet{
+		Agent:    player.Noun{Name:"Dave"},
+		Recipient: player.Person{Name:"Dave"},
+		Action: player.Verb{Name:"Kill", SocialStigma:-1, Attitude:-0.9},
+		Possibility: float32(0.9)}.Process()
 }
