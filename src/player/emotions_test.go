@@ -2,6 +2,7 @@ package player
 
 import (
 	"testing"
+	"fmt"
 )
 
 func TestProcess (t *testing.T) {
@@ -14,21 +15,22 @@ func TestProcess (t *testing.T) {
 				Agent:Person{Name: "Alice"},
 				Recipient:Person{Name: "Alice"},
 				Action: Verb{Name: "Kill", SocialStigma: -0.8, Attitude: -0.5},
-				Possibility:float32(0.9),
+				Possibility:0.9,
 			},
-			expectResult: EMOTION_JOY,
+			expectResult: EMOTION_SHAME | EMOTION_DISTRESS,
 		},
 		{
 			applet : Applet{
 				Agent:Person{Name: "Alice"},
 				Recipient:Person{Name: "Bob"},
-				Action: Verb{Name: "Kill", SocialStigma: -0.8, Attitude: -0.5},
-				Possibility:float32(0.9),
+				Action: Verb{Name: "Search", SocialStigma: -0.8, Attitude: -0.5},
+				Possibility:0.9,
 			},
-			expectResult: EMOTION_ADMIRATION|EMOTION_HOPE,
+			expectResult: EMOTION_ANGER | EMOTION_DISTRESS,
 		},
 	}
-	for _, c := range cases  {
+	for _, c := range cases {
+		fmt.Println(c.applet.Process())
 		if c.applet.Process() != c.expectResult {
 			t.Fail()
 		}

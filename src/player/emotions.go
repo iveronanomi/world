@@ -46,7 +46,7 @@ type Applet struct {
 }
 
 func (p Person) getAttitude(r IRecipient) float32 {
-	return 0
+	return float32(1)
 }
 
 func (p Person) equal(r IRecipient) bool {

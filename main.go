@@ -24,16 +24,4 @@ func main() {
 	if getVerbs() == nil {
 		fmt.Println(verbs)
 	}
-
-	player.Applet{
-		Agent:    player.Person{Name:"Dave"},
-		Recipient: player.Person{Name:"Dave"},
-		Action: player.Verb{Name:"Kill", SocialStigma:-1, Attitude:-0.9},
-		Possibility: float32(0.9)}.Process()
-
-	player.Applet{
-		Agent:    player.Noun{Name:"Dave"},
-		Recipient: player.Person{Name:"Dave"},
-		Action: player.Verb{Name:"Kill", SocialStigma:-1, Attitude:-0.9},
-		Possibility: float32(0.9)}.Process()
 }
