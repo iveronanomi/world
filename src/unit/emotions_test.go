@@ -1,4 +1,4 @@
-package player
+package unit
 
 import (
 	"testing"
@@ -11,8 +11,8 @@ func TestProcess(t *testing.T) {
 	}{
 		{
 			applet: Applet{
-				Agent:       Person{Name: "Alice"},
-				Recipient:   Person{Name: "Alice"},
+				Agent:       Unit{Name: "Alice"},
+				Recipient:   Unit{Name: "Alice"},
 				Action:      Verb{Name: "Kill", SocialStigma: -0.8, Attitude: -0.5},
 				Possibility: 0.9,
 			},
@@ -20,8 +20,8 @@ func TestProcess(t *testing.T) {
 		},
 		{
 			applet: Applet{
-				Agent:       Person{Name: "Alice"},
-				Recipient:   Person{Name: "Bob"},
+				Agent:       Unit{Name: "Alice"},
+				Recipient:   Unit{Name: "Bob"},
 				Action:      Verb{Name: "Search", SocialStigma: -0.8, Attitude: -0.5},
 				Possibility: 0.9,
 			},

@@ -1,6 +1,7 @@
-package player
+package unit
 
-type Person struct {
+type Unit struct {
+	Id   int    `json:"id"`
 	Name string `json:"name"`
 	Age  int8   `json:"age"`
 	PsychoEmotionalFeatures

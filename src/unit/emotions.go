@@ -1,4 +1,4 @@
-package player
+package unit
 
 type Bitmask uint16
 type Emotion Bitmask
@@ -45,12 +45,12 @@ type Applet struct {
 	Possibility float32
 }
 
-func (p Person) getAttitude(r IRecipient) float32 {
+func (p Unit) getAttitude(r IRecipient) float32 {
 	return float32(1)
 }
 
-func (p Person) equal(r IRecipient) bool {
-	cp, ok := r.(Person)
+func (p Unit) equal(r IRecipient) bool {
+	cp, ok := r.(Unit)
 	if ok {
 		return cp.Name == p.Name
 	}

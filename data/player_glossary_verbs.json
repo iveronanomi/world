@@ -1,0 +1,12 @@
+[
+  {
+    "player_id": 1,
+    "verb_id": 1,
+    "attitude": 1
+  },
+  {
+    "player_id": 2,
+    "verb_id": 1,
+    "attitude": 0
+  }
+]

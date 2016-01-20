@@ -1,13 +1,16 @@
 [
   {
+    "id": 1,
     "name": "Bob Bad",
     "age": 20
   },
   {
+    "id": 2,
     "name": "Rob Joice",
     "age": 19
   },
   {
+    "id": 3,
     "name": "Alice Nice",
     "age": 21
   }
