@@ -1,5 +1,22 @@
 [
-  {"Name": "Kill", "attitude": 0.2, "socialStigma": 0.3},
-  {"Name": "Getting skill", "attitude": 0.5, "socialStigma": 0.3},
-  {"Name": "Eating", "attitude": 0.8, "socialStigma": 0.2}
+  {
+    "name": "Kill",
+    "attitude": -0.8,
+    "social_stigma": -0.8
+  },
+  {
+    "name": "Getting skill",
+    "attitude": 0.5,
+    "social_stigma": 0.3
+  },
+  {
+    "name": "Eating",
+    "attitude": 0.8,
+    "social_stigma": 0.2
+  },
+  {
+    "name": "Fishing",
+    "attitude": 0.2,
+    "social_stigmata": 0
+  }
 ]

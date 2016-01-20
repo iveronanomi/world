@@ -24,14 +24,14 @@ type IAgent interface {
 }
 
 type Verb struct {
-	Name         string
-	Attitude     float32
-	SocialStigma float32
+	Name         string  `json:"name"`
+	Attitude     float32 `json:"attitude"`
+	SocialStigma float32 `json:"social_stigma"`
 }
 
 type Noun struct {
-	Name     string
-	Attitude float32
+	Name     string  `json:"name"`
+	Attitude float32 `json:"attitude"`
 }
 
 type IProcessable interface {
@@ -90,14 +90,14 @@ func (a Applet) Process() Emotion {
 		}
 	}
 
-	if (a.Action.Attitude > 0 && a.Agent.getAttitude(a.Recipient) > 0 ||
-	a.Action.Attitude < 0 && a.Agent.getAttitude(a.Recipient) < 0) {
-		emo |= EMOTION_JOY//|EMOTION_HOPE|EMOTION_DISAPPOINTMENT
+	if a.Action.Attitude > 0 && a.Agent.getAttitude(a.Recipient) > 0 ||
+		a.Action.Attitude < 0 && a.Agent.getAttitude(a.Recipient) < 0 {
+		emo |= EMOTION_JOY //|EMOTION_HOPE|EMOTION_DISAPPOINTMENT
 	}
 
-	if (a.Action.Attitude < 0 && a.Agent.getAttitude(a.Recipient) > 0 ||
-	a.Action.Attitude > 0 && a.Agent.getAttitude(a.Recipient) < 0) {
-		emo |= EMOTION_DISTRESS//|EMOTION_FEAR|EMOTION_RELIEF
+	if a.Action.Attitude < 0 && a.Agent.getAttitude(a.Recipient) > 0 ||
+		a.Action.Attitude > 0 && a.Agent.getAttitude(a.Recipient) < 0 {
+		emo |= EMOTION_DISTRESS //|EMOTION_FEAR|EMOTION_RELIEF
 	}
 
 	return emo

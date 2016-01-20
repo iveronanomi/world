@@ -1,14 +1,15 @@
 package main
+
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"encoding/json"
 	"world/src/player"
 )
 
 var verbs []player.Verb
 
-func getVerbs() (error) {
+func getVerbs() error {
 	var err error
 	if len(verbs) == 0 {
 		data, err := ioutil.ReadFile("./data/glossary_verbs.json")
@@ -22,6 +23,6 @@ func getVerbs() (error) {
 
 func main() {
 	if getVerbs() == nil {
-		fmt.Println(verbs)
+		fmt.Printf("%#v \n", verbs)
 	}
 }

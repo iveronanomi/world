@@ -1,8 +1,8 @@
 package player
 
 type Person struct {
-	Name string
-	Age  int8
+	Name string `json:"name"`
+	Age  int8   `json:"age"`
 	PsychoEmotionalFeatures
 	Emotions
 }

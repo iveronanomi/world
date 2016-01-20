@@ -31,9 +31,9 @@ func TestProcess(t *testing.T) {
 	for _, c := range cases {
 		if p := c.applet.Process(); p != c.expectResult {
 			t.Fail()
-			t.Logf("{%d} Error: Emotion expected: %d, getted: %d\n", p, c.expectResult)
+			t.Logf("Error: Emotion expected: %d, getted: %d\n", p, c.expectResult)
 		} else {
-			t.Logf("{%d} Succcess: Emotion expected: %d, getted: %d\n", p, c.expectResult)
+			t.Logf("Succcess: Emotion expected: %d, getted: %d\n", p, c.expectResult)
 		}
 	}
 
