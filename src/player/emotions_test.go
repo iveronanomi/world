@@ -29,8 +29,11 @@ func TestProcess(t *testing.T) {
 		},
 	}
 	for _, c := range cases {
-		if c.applet.Process() != c.expectResult {
+		if p := c.applet.Process(); p != c.expectResult {
 			t.Fail()
+			t.Logf("{%d} Error: Emotion expected: %d, getted: %d\n", p, c.expectResult)
+		} else {
+			t.Logf("{%d} Succcess: Emotion expected: %d, getted: %d\n", p, c.expectResult)
 		}
 	}
 
