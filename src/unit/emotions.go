@@ -1,5 +1,7 @@
 package unit
 
+//import "math"
+
 type Bitmask uint16
 type Emotion Bitmask
 
@@ -73,32 +75,45 @@ func (n Noun) equal(r IRecipient) bool {
 	return false
 }
 
+//func (a Applet) GetEmotionIntensity(e Emotion) float64 {
+//	if ((EMOTION_JOY|EMOTION_DISAPPOINTMENT|EMOTION_DISTRESS|EMOTION_RELIEF)&e == e) {
+//		return (math.Abs(float64(a.Action)) + math.Abs(float64(a.Recipient)))/2
+//	}
+//	if ((EMOTION_HOPE|EMOTION_FEAR)&e == e) {
+//		return (math.Abs(float64(a.Action)) + math.Abs(float64(a.Recipient)))/2 * a.Possibility
+//	}
+//	if ((EMOTION_PRIDE|EMOTION_ADMIRATION|EMOTION_SHAME|EMOTION_ANGER)&e == e) {
+//		return math.Abs(a.Action.SocialStigma)
+//	}
+//	return float64(0)
+//}
+
 func (a Applet) Process() Emotion {
-	var emo Emotion
+	var e Emotion
 
 	if a.Action.SocialStigma > 1 {
 		if a.Agent.equal(a.Recipient) {
-			emo = EMOTION_PRIDE
+			e = EMOTION_PRIDE
 		} else {
-			emo = EMOTION_ADMIRATION
+			e = EMOTION_ADMIRATION
 		}
 	} else if a.Action.SocialStigma < 1 {
 		if a.Agent.equal(a.Recipient) {
-			emo = EMOTION_SHAME
+			e = EMOTION_SHAME
 		} else {
-			emo = EMOTION_ANGER
+			e = EMOTION_ANGER
 		}
 	}
 
 	if a.Action.Attitude > 0 && a.Agent.getAttitude(a.Recipient) > 0 ||
 		a.Action.Attitude < 0 && a.Agent.getAttitude(a.Recipient) < 0 {
-		emo |= EMOTION_JOY //|EMOTION_HOPE|EMOTION_DISAPPOINTMENT
+		e |= EMOTION_JOY //|EMOTION_HOPE|EMOTION_DISAPPOINTMENT
 	}
 
 	if a.Action.Attitude < 0 && a.Agent.getAttitude(a.Recipient) > 0 ||
 		a.Action.Attitude > 0 && a.Agent.getAttitude(a.Recipient) < 0 {
-		emo |= EMOTION_DISTRESS //|EMOTION_FEAR|EMOTION_RELIEF
+		e |= EMOTION_DISTRESS //|EMOTION_FEAR|EMOTION_RELIEF
 	}
 
-	return emo
+	return e
 }
